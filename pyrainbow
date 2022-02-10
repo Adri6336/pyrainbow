@@ -1,0 +1,76 @@
+#!/bin/python3
+from hashlib import sha256  # Needed to hash text
+from sys import argv  # Needed to get command line arguments 
+from sys import exit as terminate  # Needed to use exit codes
+from os import path  # Needed to determine if target file exists
+from termcolor import colored as color  # Needed to pimp out script
+from os import geteuid as userType 
+
+
+# ============ FUNCTIONS ============
+
+def hashIt(text):
+    '''
+    This hashes the text it recieves.
+    :Return: string hexadecimal sha256 digest
+    '''
+    return str(sha256(text.encode('utf-8')).hexdigest())  # Get the text, convert to a byte stream, then hash using sha256
+
+
+def info(content, bad=False):
+    '''
+    This prints infomation with style (blue if good, red if bad)
+    "Return: None
+    '''
+    
+    if not bad:
+        print(color('[i] ', 'blue') + color(content, 'white'))
+        
+    else:
+        print(color('[X] ', 'red') + color(content, 'white'))
+
+
+# ============ START ============
+# 0. Prevent root user
+if userType() == 0:
+    info('Please don\'t run this as root', bad=True)
+    terminate(2)
+
+# 1. Get argument
+# 1.1 Determine target and output name
+try:
+    target = argv[1]  # The first argument is the target location
+    filename = argv[2]  # This determines what you'll call the output file
+
+except:  # If this happens, the user failed to specify a target
+    info('Syntax: pyrainbow <target file>', bad=True)
+    terminate(1)
+
+# 1.2 Determine if the target file exists
+if not path.isfile(target):  # If this happens, the user failed to specify correct path
+    info('Target file does not exist', bad=True)
+    info('Syntax: pyrainbow <target file>')
+    terminate(1)  # Return code of 1 if failure
+
+# 2. Open a new file and make a rainbow file
+with open(filename + '.txt', 'w') as bowFile:  # Create file to deposit info
+    with open(target, 'rb') as passwords:  # Read list of text, which must be separated by newline
+
+        # 3.Read the rockyou file as a bytes 
+        pswList = passwords.read().split(b'\n')  # Get a list of individual passwords, split by the b'\n'
+        
+        # 4. Iterate through the list of byte text strings
+        info('Hashing now, please wait ...')
+        for password in pswList:  
+            try:  
+                decoded = password.decode('utf-8')  # Decode the bytes in the psw using utf-8
+                bowFile.write('%s,%s\n' % (decoded, hashIt(decoded)))  # Write to the rainbow file password,hash
+
+            except Exception as e:  # If problem occurs, tell me why
+                info('Caught Error, Still Working: %s' % (str(e)), bad=True)
+                with open('blackbox.txt', 'w') as log:
+                    log.write('ERROR: ' + str(e))
+
+# 5. Close script with a code of 0 when successful                    
+info('Process complete.')
+terminate(1)

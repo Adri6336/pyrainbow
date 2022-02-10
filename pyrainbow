@@ -42,13 +42,13 @@ try:
     filename = argv[2]  # This determines what you'll call the output file
 
 except:  # If this happens, the user failed to specify a target
-    info('Syntax: pyrainbow <target file>', bad=True)
+    info('Syntax: pyrainbow <target file> <output name>', bad=True)
     terminate(1)
 
 # 1.2 Determine if the target file exists
 if not path.isfile(target):  # If this happens, the user failed to specify correct path
     info('Target file does not exist', bad=True)
-    info('Syntax: pyrainbow <target file>')
+    info('Syntax: pyrainbow <target file> <output name>')
     terminate(1)  # Return code of 1 if failure
 
 # 2. Open a new file and make a rainbow file

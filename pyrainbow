@@ -4,7 +4,7 @@ from sys import argv  # Needed to get command line arguments
 from sys import exit as terminate  # Needed to use exit codes
 from os import path  # Needed to determine if target file exists
 from termcolor import colored as color  # Needed to pimp out script
-from os import geteuid as userType 
+from os import geteuid as userType  # Needed to determine usertype (i.e. root or not)
 
 
 # ============ FUNCTIONS ============

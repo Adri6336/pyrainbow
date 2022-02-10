@@ -19,7 +19,7 @@ def hashIt(text):
 def info(content, bad=False):
     '''
     This prints infomation with style (blue if good, red if bad)
-    "Return: None
+    :Return: None
     '''
     
     if not bad:

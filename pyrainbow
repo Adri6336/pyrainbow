@@ -8,7 +8,6 @@ from os import geteuid as userType
 
 
 # ============ FUNCTIONS ============
-
 def hashIt(text):
     '''
     This hashes the text it recieves.

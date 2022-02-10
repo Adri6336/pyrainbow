@@ -9,7 +9,4 @@ Enter the following commands into the terminal, at the directory where you have 
 2. ./pyrainbow \<target file\> \<output file name\>
   
 ## Windows
-1. Install python3
-2. Edit the script, removing the first line with "#!/bin/python3"
-3. Open cmd and navigate to the dir with the script
-4. Enter command: python pyrainbow \<target file\> \<output file name\>
+Incompatible
